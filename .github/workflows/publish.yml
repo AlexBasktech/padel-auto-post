@@ -1,0 +1,30 @@
+name: Post Instagram Padel du jour
+
+on:
+  schedule:
+    # 9h45 UTC = 9h45 au Maroc (GitHub lance parfois avec 5 à 20 min de retard, donc ≈ 10h)
+    - cron: "45 9 * * *"
+  workflow_dispatch:
+    inputs:
+      post_date:
+        description: "Date à publier (AAAA-MM-JJ), vide = aujourd'hui"
+        required: false
+        default: ""
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Publier le post du jour
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          MAIL_TO: alex@basktech.io
+          POST_DATE: ${{ github.event.inputs.post_date }}
+        run: python publish.py
