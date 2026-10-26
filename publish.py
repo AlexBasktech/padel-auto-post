@@ -78,7 +78,7 @@ def main():
         link = api("GET", media_id, fields="permalink").get("permalink", "")
     except Exception as e:
         send_mail(f"❌ Échec du post Padel du {day_fr}", f"La publication a échoué :\n\n{e}")
-        print(e)
+        print(f"::error::{e}")
         sys.exit(1)
 
     print("Publié :", link)
