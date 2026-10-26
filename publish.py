@@ -16,7 +16,7 @@ import requests
 API = "https://graph.instagram.com/v24.0"
 TZ = ZoneInfo("Africa/Casablanca")
 
-IG_USER_ID = os.environ["IG_USER_ID"].strip()
+IG_USER_ID = os.environ.get("IG_USER_ID", "").strip() or "17841448401427396"
 TOKEN = os.environ["IG_ACCESS_TOKEN"].strip().strip("\"'")
 REPO = os.environ["GITHUB_REPOSITORY"]  # fourni par GitHub Actions
 BRANCH = os.environ.get("GITHUB_REF_NAME", "main")
