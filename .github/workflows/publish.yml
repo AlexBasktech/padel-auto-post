@@ -28,3 +28,22 @@ jobs:
           MAIL_TO: alex@basktech.io
           POST_DATE: ${{ github.event.inputs.post_date }}
         run: python publish.py
+
+  basktech:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Publier le post BaskTech
+        env:
+          IG_USER_ID: ${{ '17841458411785397' }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_TOKEN_BASKTECH }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          MAIL_TO: alex@basktech.io
+          POSTS_DIR: basktech
+          ACCOUNT_NAME: BaskTech
+          POST_DATE: ${{ github.event.inputs.post_date }}
+        run: python publish.py
