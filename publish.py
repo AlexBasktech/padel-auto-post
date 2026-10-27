@@ -64,6 +64,14 @@ def main():
     print("Image :", image_url)
 
     try:
+        # 0. Garde-fou : ne rien publier si un post est déjà parti ce jour-là
+        recent = api("GET", f"{IG_USER_ID}/media", fields="timestamp", limit=25).get("data", [])
+        for m in recent:
+            ts = datetime.strptime(m["timestamp"], "%Y-%m-%dT%H:%M:%S%z").astimezone(TZ)
+            if ts.strftime("%Y-%m-%d") == day:
+                print(f"Un post a déjà été publié le {day_fr} : on ne publie pas de doublon.")
+                return
+
         # 1. Créer le conteneur média
         container = api("POST", f"{IG_USER_ID}/media", image_url=image_url, caption=caption)["id"]
 
